@@ -1,0 +1,48 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Error page.">
+
+    <div class="min-h-screen bg-black text-orange-500 flex flex-col items-center justify-center p-4">
+        <div class="w-full max-w-4xl bg-gray-900 rounded-lg shadow-2xl p-8 relative overflow-hidden text-center">
+          <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-500 via-red-500 to-purple-500"></div>
+          
+          <h1 class="text-6xl md:text-8xl font-extrabold mb-4 text-orange-500 font-horror">
+            404
+          </h1>
+          
+          <p class="text-2xl md:text-3xl font-bold mb-8 text-red-600">
+            Oh no! You've lost yourself in the realm of shadows
+          </p>
+          
+          <div class="mb-8">
+            <p class="text-lg md:text-xl text-gray-400 mb-4">
+                It seems you have stumbled upon an empty tomb. The page you seek has vanished into the mists of the afterlife.
+            </p>
+            <p class="text-lg md:text-xl text-gray-400">
+                Fear not, mortal. You can still escape this digital graveyard.
+            </p>
+          </div>
+          
+          <a href="/" class="w-full flex justify-center items-center">
+            <button class="flex gap-3 bg-gradient-to-r from-orange-500 via-red-500 to-purple-500 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:from-orange-600 hover:via-red-600 hover:to-purple-600 transform hover:scale-105">
+                <svg xmlns="http://www.w3.org/2000/svg" x-bind:width="size" x-bind:height="size" viewBox="0 0 24 24" fill="none" stroke="currentColor" x-bind:stroke-width="stroke" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
+                    <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                    <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                    <path d="M10 12h4v4h-4z"></path>
+                </svg>
+                <p>Return to the World of the Living</p>
+            </button>
+          </a>
+          
+          <div class="mt-12 relative">
+            <div class="border-t border-gray-700 w-full absolute top-1/2 transform -translate-y-1/2"></div>
+            <span class="bg-gray-900 px-4 relative z-10 text-sm text-gray-500">
+                Beware of restless spirits
+            </span>
+          </div>
+        </div>
+    </div>
+
+
+</Layout>
