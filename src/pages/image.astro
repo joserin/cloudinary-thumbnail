@@ -1,0 +1,429 @@
+---
+import { getCldImageUrl } from "astro-cloudinary/helpers"
+import Layout from "../layouts/Layout.astro"
+import Accordion from "../components/Accordion.astro"
+import Modal from "../components/Modal.astro"
+
+const { searchParams } = Astro.url
+const id = searchParams.get("id")
+
+if (id == null) return Astro.redirect("/")
+
+const url = getCldImageUrl({ 
+    src: id,
+    aspectRatio: '16:9',
+    
+    crop: {
+        width: 720,
+        height: 405,
+        type: 'pad'
+    },
+    fillBackground:true,
+})
+---
+ 
+<Layout title="Generate Image">
+    <main data-id={id} class="w-full max-w-4xl bg-gray-900 rounded-lg shadow-2xl p-8 relative overflow-hidden flex flex-col gap-5">
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-500 via-red-500 to-purple-500"></div>
+        <header>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-8 text-orange-500 font-horror">
+                Customize your Thumbnail
+            </h1>
+        </header>
+
+        <section id="container-img" class="flex justify-center items-center max-h-screen">
+            <img id="image-creada" class="aspect-video skeleton" src={url} alt="imagen a modificar">
+        </section>
+
+        <section id="warning-label" class="text-center hidden">
+            <span class="border px-1 py-1 rounded-xl skeleton bg-yellow-50">
+                Generating Thumbnail
+            </span>
+        </section>
+
+        <section class="flex flex-col gap-5 my-5">
+
+                <Accordion class="p-1 m-1" title="Modify Background" name="edit">
+                    <div>
+                        <input
+                            type="text" maxlength="100" id="prompt"
+                            placeholder="Background elements (e.g. fog, spider webs)"
+                            class="bg-gray-800 border-orange-500 text-orange-500 placeholder-orange-300 p-2 w-full"
+                        /> 
+                    </div>
+                    <div>
+                        <section class="grid md:grid-cols-2 gap-4 m-1 p-1">
+                            <div class='flex md:flex-col justify-between gap-3'>
+                                <div class="flex justify-between gap-3 items-center">
+                                    <label class="block text-sm font-medium">Style</label>
+                                    <Modal>
+                                        <button slot="button-open" class="flex gap-2 items-center button-modal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                <path d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z" />
+                                                <path d="M12 9h.01" />
+                                                <path d="M11 12h1v4h1" />
+                                            </svg>
+                                            Style Guide
+                                        </button>
+                                        <div class='bg-white flex flex-col gap-3 p-3 overflow-auto'>
+                                            <header class="text-center">
+                                                <h5 class="text-2xl">Style</h5>
+                                            </header>
+                                            <div class="img-guide grid grid-cols-3 md:grid-cols-4 gap-4">
+                                                
+                                                <picture>
+                                                    <img src="https://res.cloudinary.com/demo/image/upload/e_art:aurora/v1690194782/docs/diy-house.jpg" alt="">
+                                                    <span>Aurora</span>
+                                                </picture>
+                                                <picture>
+                                                    <img src="https://res.cloudinary.com/demo/image/upload/e_art:audrey/v1690194782/docs/diy-house.jpg" alt="">
+                                                    <span>Audrey</span>
+                                                </picture>
+                                                <picture>
+                                                    <img src="https://res.cloudinary.com/demo/image/upload/e_art:athena/v1690194782/docs/diy-house.jpg" alt="">
+                                                    <span>Athena</span>
+                                                </picture>
+                                                <picture>
+                                                    <img src="https://res.cloudinary.com/demo/image/upload/e_art:fes/v1690194782/docs/diy-house.jpg" alt="">
+                                                    <span>Fes</span>
+                                                </picture>
+                                                <picture>
+                                                    <img src="https://res.cloudinary.com/demo/image/upload/e_art:quartz/v1690194782/docs/diy-house.jpg" alt="">
+                                                    <span>Quartz</span>
+                                                </picture>
+                                                <picture>
+                                                    <img src="https://res.cloudinary.com/demo/image/upload/e_art:refresh/v1690194782/docs/diy-house.jpg" alt="">
+                                                    <span>Refresh</span>
+                                                </picture>
+                                                <picture>
+                                                    <img src="https://res.cloudinary.com/demo/image/upload/e_art:primavera/v1690194782/docs/diy-house.jpg" alt="">
+                                                    <span>Primavera</span>
+                                                </picture>
+                                                <picture>
+                                                    <img src="https://res.cloudinary.com/demo/image/upload/e_art:zorro/v1690194782/docs/diy-house.jpg" alt="">
+                                                    <span>Zorro</span>
+                                                </picture>
+                                            </div>
+                                            <footer class="flex justify-end">
+                                                <button class="modal-close px-2 py-1 bg-slate-200 hover:bg-slate-300 w-fit" >cerrar </button>
+                                            </footer>
+                                        </div>
+                                    </Modal>
+                                </div>
+                                <select id="select-style">
+                                    <option value="aurora">Aurora</option>
+                                    <option value="audrey">Audrey</option>
+                                    <option value="athena">Athena</option>
+                                    <option value="fes">Fes</option>
+                                    <option value="quartz">Quartz</option>
+                                    <option value="refresh">Refresh</option>
+                                    <option value="primavera">Primavera</option>
+                                    <option value="zorro">Zorro</option>
+                                </select>
+                            </div>
+                            <div class='flex md:flex-col justify-between gap-3'>
+                                <div class="flex justify-between gap-3 items-center">
+                                    <label class="block text-sm font-medium">Filter</label>
+                                    <Modal>
+                                        <button slot="button-open" class="flex gap-2 items-center button-modal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                <path d="M12 8m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
+                                                <path d="M8 11a5 5 0 1 0 3.998 1.997" />
+                                                <path d="M12.002 19.003a5 5 0 1 0 3.998 -8.003" />
+                                            </svg>
+                                            Filter Guide
+                                        </button>
+                                        <div class='bg-white flex flex-col gap-3 p-3 overflow-auto'>
+                                            <header class="text-center">
+                                                <h5 class="text-2xl">Filter</h5>
+                                            </header>
+                                            <div class="img-guide grid grid-cols-2 md:grid-cols-3 gap-4">
+                                                
+                                                <picture>
+                                                    <img src="https://res.cloudinary.com/demo/image/upload/e_blackwhite/horses.jpg" alt="">
+                                                    <span>Black and White</span>
+                                                </picture>
+                                                <picture>
+                                                    <img src="https://res.cloudinary.com/demo/image/upload/e_blur:400/front_face.jpg" alt="">
+                                                    <span>Blur</span>
+                                                </picture>
+                                                <picture>
+                                                    <img src="https://res.cloudinary.com/demo/image/upload/e_cartoonify/docs/rmv_bgd/stuffed_orig.jpg" alt="">
+                                                    <span>Cartoonify</span>
+                                                </picture>
+                                                <picture>
+                                                    <img src="https://res.cloudinary.com/demo/image/upload/e_pixelate:20/docs/flower_shop.jpg" alt="">
+                                                    <span>Pixelate</span>
+                                                </picture>
+                                                <picture>
+                                                    <img src="https://res.cloudinary.com/demo/image/upload/e_sepia/docs/couple-rocks.jpg" alt="">
+                                                    <span>Sepia</span>
+                                                </picture>
+                                            </div>
+                                            <footer class="flex justify-end">
+                                                <button class="modal-close px-2 py-1 bg-slate-200 hover:bg-slate-300 w-fit" >cerrar </button>
+                                            </footer>
+                                        </div>
+                                    </Modal>
+                                </div>
+                                <select id="select-filter">
+                                    <option value="ninguno">None</option>
+                                    <option value="blanco-negro">Black and White</option>
+                                    <option value="blur">Blur</option>
+                                    <option value="cartoonify">Cartoonify</option>
+                                    <option value="sepia">Sepia</option>
+                                    <option value="pixelate">Pixel Art</option>
+                                </select>
+                            </div>
+                        </section>
+                    </div>
+                </Accordion>
+                <Accordion class="p-1" title="Add Text" name="edit">
+                    <div>
+                        <input id="promt-text" type="text" maxlength={50} placeholder="Add Text to your Image"
+                            class="bg-gray-800 border-orange-500 text-orange-500 placeholder-orange-300 p-2 w-full"
+                        />
+                    </div>
+                    <div>
+                        <section class="grid md:grid-cols-2 gap-4 ">
+                            <div>
+                                <label class="block text-sm font-medium mb-3">Font Size</label>
+                                <input id="font-size" type='range' min={16} max={72} step={1} class="w-full"/>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Text Color</label>
+                                <input id="text-color" type="color" class="w-full h-10 p-1 bg-gray-800 border-orange-500"/>
+                            </div>
+                        </section>
+                
+                        <section class="grid md:grid-cols-2 gap-4">
+                            <div class='flex md:flex-col justify-between'>
+                                <label class="block text-sm font-medium mb-1">Vertical text position</label>
+                                <select id="text-position-vertical">
+                                    <option value="start">Start</option>
+                                    <option value="center" selected="selected">Center</option>
+                                    <option value="end">End</option>
+                                </select>
+                            </div>
+                            <div class='flex md:flex-col justify-between'>
+                                <label class="block text-sm font-medium mb-1">Horizontal text position</label>
+                                <select id="text-position-horizontal">
+                                    <option value="start">Left</option>
+                                    <option value="center" selected="selected">Center</option>
+                                    <option value="end">Right</option>
+                                </select>
+                            </div>
+                        </section>
+                    </div>
+                </Accordion>
+        </section>
+
+            <footer class="relative flex flex-col gap-5">
+                <section class="flex space-x-4">
+                    <button id="new-image"
+                        class="flex-1 bg-purple-700 hover:bg-purple-600 text-white font-bold py-2 px-4 
+                            rounded transition-colors duration-300">
+                            Upload Image
+                    </button>
+                    <button id="create-thumbnail"
+                        class="flex-1 bg-gradient-to-r from-orange-500 via-red-500 to-purple-500 text-white 
+                            font-bold py-2 px-4 rounded transition-all duration-300 hover:from-orange-600
+                            hover:via-red-600 hover:to-purple-600">
+                        Generate Thumbnail
+                    </button>
+                    <p id="error-background" class="absolute right-0 bg-white top-10 hidden">Prompt entry required for background</p>
+                </section>
+                <section>
+                    <button id="save-image"
+                        class="w-full bg-green-700 hover:bg-green-600 text-white font-bold py-3 rounded 
+                            transition-colors duration-300">
+                        Download
+                    </button>
+                </section>
+                <p class="mt-6 text-center text-sm text-gray-400">
+                    Customize your miniature's background to maximize the terror!
+                </p>
+            </footer>
+    </main>
+</Layout>
+
+<style>
+    .skeleton{
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        border-radius: 0.375rem;
+    }
+    .img-guide img{
+        width: 7rem;
+        height: 7rem;
+    }
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: .5;
+        }
+    }
+</style>
+
+<script>
+    import { getCldImageUrl } from "astro-cloudinary/helpers"
+    import { navigate } from "astro:transitions/client"
+
+    const id = document.querySelector("main")?.getAttribute("data-id") ?? ""
+    const image = document.getElementById("image-creada") as HTMLImageElement
+    const warningLabel = document.getElementById("warning-label") as HTMLElement
+    const errorLabel = document.getElementById("error-background") as HTMLElement
+    
+    //----------background----------------
+    const prompt = document.getElementById("prompt") as HTMLInputElement
+    const selectStyle = document.getElementById("select-style") as HTMLSelectElement
+    const selectFilter = document.getElementById("select-filter") as HTMLSelectElement
+    const buttonThumbnail = document.getElementById("create-thumbnail") as HTMLButtonElement
+    const buttonNewImage= document.getElementById("new-image") as HTMLButtonElement
+    const buttonSave = document.getElementById("save-image") as HTMLButtonElement
+    //-----------------text---------------
+    const text = document.getElementById("promt-text") as HTMLInputElement
+    const fontSize = document.getElementById("font-size") as HTMLInputElement
+    const textColor = document.getElementById("text-color") as HTMLInputElement
+    const textPositionVertical = document.getElementById("text-position-vertical") as HTMLSelectElement
+    const textPositionHorizontal = document.getElementById("text-position-horizontal") as HTMLSelectElement
+    let url = ""
+    /*
+    function SaveImage(srcImage: string){
+        const url = getCldImageUrl({
+            src: srcImage,
+            format:"jpg",
+            //preserveTransformations: true
+        })
+        return url
+    }*/
+
+    function verificarEleccionPosicion(select: string, CHOICE: string[]){
+        if(select === 'start'){
+            return CHOICE[0]
+        }else if(select === 'end'){
+            return CHOICE[1]
+        }else{
+            return 'center'
+        }
+
+    }
+
+    function position(x: string, y: string){
+        let address = 'center'
+
+        if(x === 'center' && y === 'center'){
+            return [address, 0]
+        }
+
+        const horizontal = verificarEleccionPosicion(x, ['west', 'east'])
+        const vertical = verificarEleccionPosicion(y, ['north', 'south'])
+
+        if(horizontal === 'center'){
+            address = vertical 
+        }else if(vertical === 'center'){
+            address = horizontal
+        }else{
+            address = vertical +'_'+horizontal
+        }
+        return [address, 5]
+    }
+    
+
+    if(buttonThumbnail){
+        buttonThumbnail.addEventListener("click", () =>{
+            try {
+                if(prompt.value.length > 0){
+                    errorLabel.classList.add("hidden")
+                    warningLabel.classList.remove("hidden")
+                    if(text.value.length > 0){
+                        const [grav, pad] = position(textPositionHorizontal.value, textPositionVertical.value)
+
+                        url = getCldImageUrl({
+                            src: image.src,
+                            
+                            aspectRatio: '16:9',
+                            crop: {
+                                width: 720,
+                                height: 405,
+                                type: 'lpad'
+                            },
+                            replaceBackground: prompt.value,
+                            sepia:(selectFilter.value).toLowerCase() === 'sepia',
+                            blackwhite:(selectFilter.value).toLowerCase() === 'blanco-negro',
+                            blur:(selectFilter.value).toLowerCase() === 'blur',
+                            cartoonify:(selectFilter.value).toLowerCase() === 'cartoonify',
+                            pixelate:(selectFilter.value).toLowerCase() === 'pixelate',
+                            art:(selectStyle.value).toLowerCase(),
+                            overlays: [{
+                                position: {
+                                x: pad,
+                                y: pad,
+                                gravity: grav.toString(),
+                                },
+                                text: {
+                                    color: textColor.value || 'black',
+                                    fontFamily: 'Source Sans Pro',
+                                    fontSize: parseInt(fontSize.value) || 100,
+                                    fontWeight: 'black',
+                                    text: text.value
+                                }
+                            }],
+                            preserveTransformations: true
+                        })
+                    }else{
+                        url = getCldImageUrl({
+                            src: id,
+                            aspectRatio: '16:9',
+                            crop: {
+                                width: 720,
+                                height: 405,
+                                type: 'lpad'
+                            },
+                            replaceBackground: prompt.value,
+                            sepia:(selectFilter.value).toLowerCase() === 'sepia',
+                            blackwhite:(selectFilter.value).toLowerCase() === 'blanco-negro',
+                            blur:(selectFilter.value).toLowerCase() === 'blur',
+                            cartoonify:(selectFilter.value).toLowerCase() === 'cartoonify',
+                            pixelate:(selectFilter.value).toLowerCase() === 'pixelate',
+                            art:(selectStyle.value).toLowerCase(),
+                            preserveTransformations: true
+                        })
+                    }
+                    image.src = url
+                    window.scrollTo(0, 0);
+                    image.onload = () => {
+                        image.classList.remove("skeleton")
+                        warningLabel.classList.add("hidden")
+                    }
+                }else{
+                    errorLabel.classList.remove("hidden")
+                }
+
+            }catch(err) {
+                window.location.reload();
+            }
+            
+        })
+    }
+
+    if(buttonNewImage){
+        buttonNewImage.addEventListener("click", () =>{
+            navigate(`/`)
+        })
+    }
+    if(buttonSave){
+        
+        buttonSave.addEventListener("click", () => {
+            //const urlSave = SaveImage(image.src)
+            const a = document.createElement("a")
+            a.target = '_blank';
+            a.href = image.src
+            a.download = "image.jpg"
+            a.click()
+        })
+    }
+</script>
