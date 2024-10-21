@@ -1,16 +1,66 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import { CldUploadWidget } from 'astro-cloudinary';
 
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Thumbnail Generator.">
+	<main class="w-full max-w-4xl bg-gray-900 rounded-lg shadow-2xl p-8 relative overflow-hidden">
+		<div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-500 via-red-500 to-purple-500"></div>
+			  
+			<header>
+				<h1 class="text-4xl md:text-5xl font-extrabold text-center mb-8 text-orange-500 font-horror">
+					Terrifying Thumbnail Generator
+				</h1>
+			</header>
+			
+			<div class="space-y-6">
+				<div class="w-full">
+					<CldUploadWidget 
+						id='cloudinary-widget'
+						uploadPreset='upload-image'
+						options={{
+							sources:["local"],
+							multiple:false,
+							maxFiles:1
+						}}
+						>
+						<button class="flex flex-col items-center justify-center border-2 border-dashed w-full
+							border-orange-500 rounded-lg p-8 bg-gray-800 transition-all duration-300 hover:bg-gray-700">
+							Press to Upload an Image
+						</button>
+					</CldUploadWidget>
+				</div>
+
+				<div class="flex text-center justify-center">
+					<span class="w-1/2 bg-gradient-to-r from-orange-500 via-red-500 to-purple-500
+						text-white font-bold py-3 rounded-lg transition-all duration-300 hover:from-orange-600
+						hover:via-red-600 hover:to-purple-600 transform hover:scale-105">
+						Upload an Image to Generate a Spooky Thumbnail
+					</span>
+				</div>
+				
+				<footer>
+					<p class="mt-6 text-center text-sm text-gray-400">
+						Create thumbnails that will make your viewers cringe!
+					</p>
+				</footer>
+			</div>
+	</main>
+</Layout>
+
+<script>
+	import { navigate } from "astro:transitions/client"
+
+	const widget = document.getElementById("cloudinary-widget");
+
+	if ( widget ) {
+		widget.addEventListener("clduploadwidget:success", ((
+        	e: CustomEvent<{ info: { public_id: string } }>
+		) => {
+			const publicId = e.detail.info.public_id
+			navigate(`/image?id=${publicId}`)
+		}) as EventListener)
+	}
+
+</script>
